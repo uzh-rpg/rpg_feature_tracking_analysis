@@ -1,0 +1,10 @@
+numpy
+matplotlib
+pyyaml
+scipy
+tabulate
+opencv-python
+tqdm
+gnupg
+pycrypto
+rospkg

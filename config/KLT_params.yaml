@@ -1,0 +1,4 @@
+type: KLT # ['KLT', 'reprojection'] type of algorithm used.
+window_size: 21 # window size of tracked patch
+num_pyramidal_layers: 1 # number of layers in pyramidal search
+
