@@ -18,15 +18,14 @@ offers the following functionality:
 
 If you use this code in an academic context, please cite the following paper:
 
-Daniel Gehrig, Henri Rebecq, Guillermo Gallego, Davide Scaramuzza, "Asynchronous Photometric Feature Tracking using Events and Frames", The European Conference on Computer Vision (ECCV), 2018, pp. 750-765
-
+Daniel Gehrig, Henri Rebecq, Guillermo Gallego, Davide Scaramuzza, "EKLT: Asynchronous Photometric Feature Tracking using Events and Frames", International Journal of Computer Vision (IJCV), 2019
 ```
-@InProceedings{Gehrig_2018_ECCV,
+@Article{Gehrig_2019_IJCV,
   author = {Daniel Gehrig and Henri Rebecq and Guillermo Gallego and Davide Scaramuzza},
-  title = {Asynchronous Photometric Feature Tracking using Events and Frames},
-  booktitle = {Eur. Conf. Comput. Vis. (ECCV)},
-  month = {September},
-  year = {2018}
+  title = {EKLT: Asynchronous Photometric Feature Tracking using Events and Frames},
+  booktitle = {Int. J. Comput. Vis. (IJCV)},
+  month = {August},
+  year = {2019}
 }
 ```
 
