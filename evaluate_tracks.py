@@ -26,7 +26,7 @@ parser.add_argument('--root', help='Directory where datasets are found.', defaul
 parser.add_argument('--dataset', help="Params yaml-file for dataset.", default="", required=True)
 parser.add_argument('--file', help="Tracks file for ground truth computation.", default="", required=True)
 
-parser.add_argument('--plot_3d', help="Whether to do a 3d plot.", action="store_true", default=True)
+parser.add_argument('--plot_3d', help="Whether to do a 3d plot.", action="store_true", default=False)
 parser.add_argument('--plot_errors', help="Tracks file giving KLT initialization.", action="store_true", default=False)
 parser.add_argument('--error_threshold', help="Error threshold. Tracks which exceed this threshold are discarded.", type=float, default=10)
 parser.add_argument('--video_preview', help="Whether to create a video preview.", action="store_true", default=False)

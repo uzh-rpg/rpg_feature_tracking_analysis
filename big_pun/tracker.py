@@ -40,6 +40,10 @@ class Tracker:
                 continue
 
             second_img = img
+            
+            if len(tracks_obj.active_features) == 0:
+                break
+                
             new_features, status, err = \
                 cv2.calcOpticalFlowPyrLK(first_img, second_img, tracks_obj.active_features,
                                          None, winSize=(window_size, window_size), maxLevel=num_pyramidal_layers)
