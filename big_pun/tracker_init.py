@@ -1,7 +1,7 @@
 import yaml
 from dataset import Dataset
 import numpy as np
-from tracker_utils import backProjectFeatures, grid_sample
+from tracker_utils import backProjectFeatures, grid_sample, filter_first_tracks
 from tracks import Tracks
 import os
 
@@ -10,7 +10,7 @@ class TrackerInitializer:
     def __init__(self, root, dataset_yaml, config_yaml=None, config=None):
         if config is None:
             with open(config_yaml, "r") as f:
-                self.config = yaml.load(f)
+                self.config = yaml.load(f, Loader=yaml.Loader)
         else:
             self.config = config
 
@@ -31,9 +31,15 @@ class TrackerInitializer:
         """
         print("[1/3] Loading tracks in %s" % os.path.basename(config["tracks_csv"]))
         tracks = np.genfromtxt(config["tracks_csv"])
-        ids = np.unique(tracks[:, 0]).astype(int)
-        tracks_dict = {i: tracks[tracks[:, 0] == i, 1:] for i in ids}
-        features = np.stack([tracks_dict[i][0] for i in ids]).reshape(-1, 1, 3)
+        first_len_tracks = len(tracks)
+        valid_ids, tracks = filter_first_tracks(tracks, filter_too_short=True)
+
+        if len(tracks) < first_len_tracks:
+            print("WARNING: This package only supports evaluation of tracks which have been initialized at the same"
+                  "time. All tracks except the first have been discarded.")
+
+        tracks_dict = {i: tracks[tracks[:, 0] == i, 1:] for i in valid_ids}
+        features = np.stack([tracks_dict[i][0] for i in valid_ids]).reshape(-1, 1, 3)
 
         print("[2/3] Loading depths, poses, frames and camera info")
         depth_dataset = Dataset(root, dataset_yaml, dataset_type="depth")
@@ -55,8 +61,8 @@ class TrackerInitializer:
         pose_dataset.set_to_first_after(t_min)
 
         # parse
-        landmarks_dict = {i: landmarks[j] for j,i in enumerate(ids)}
-        features_dict = {i: features[j] for j,i in enumerate(ids)}
+        landmarks_dict = {i: landmarks[j] for j,i in enumerate(valid_ids)}
+        features_dict = {i: features[j] for j,i in enumerate(valid_ids)}
 
         # create dict of features
         tracks_obj = Tracks(features_dict)
@@ -70,8 +76,16 @@ class TrackerInitializer:
     def init_on_track(self, root, config, dataset_yaml):
         print("[1/3] Loading tracks in %s." % os.path.basename(config["tracks_csv"]))
         tracks = np.genfromtxt(self.config["tracks_csv"])
-        ids = np.unique(tracks[:, 0]).astype(int)
-        tracks_dict = {i: tracks[tracks[:, 0] == i, 1:] for i in ids}
+
+        # check that all features start at the same timestamp, if not, discard features that occur later
+        first_len_tracks = len(tracks)
+        valid_ids, tracks = filter_first_tracks(tracks, filter_too_short=True)
+
+        if len(tracks) < first_len_tracks:
+            print("WARNING: This package only supports evaluation of tracks which have been initialized at the same"
+                  "time. All tracks except the first have been discarded.")
+
+        tracks_dict = {i: tracks[tracks[:, 0] == i, 1:] for i in valid_ids}
 
         print("[2/3] Loading frame dataset to find positions of initial tracks.")
         frame_dataset = Dataset(root, dataset_yaml, dataset_type="frames")

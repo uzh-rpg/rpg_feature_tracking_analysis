@@ -35,7 +35,7 @@ class Dataset:
         load
         """
         with open(dataset_yaml, "r") as f:
-            config = yaml.load(f)
+            config = yaml.load(f, Loader=yaml.Loader)
 
         path = join(root, config["name"])
         assert isfile(path), "The dataset '%s' does not exist." % join(root, config["name"])

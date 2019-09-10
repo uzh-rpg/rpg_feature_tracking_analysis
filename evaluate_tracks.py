@@ -47,7 +47,7 @@ else:
         "Tracker params '%s 'must be a yaml file." % args.tracker_params
 
 with open(args.tracker_params, "r") as f:
-    tracker_config = yaml.load(f)
+    tracker_config = yaml.load(f, Loader=yaml.Loader)
 
 assert os.path.isfile(args.file), "Tracks file '%s' does not exist." % args.file
 assert "type" in tracker_config, "Tracker parameters must contain a type tag, which can be one of [reprojection, KLT]."
@@ -74,7 +74,7 @@ np.savetxt(out_csv, tracked_features, fmt=["%i", "%.8f", "%.4f", "%.4f"])
 
 # load both gt and normal tracks
 print("Computing errors")
-est_tracks_data = getTrackData(args.file)
+est_tracks_data = getTrackData(args.file, filter_too_short=True)
 gt_tracks_data = getTrackData(out_csv)
 
 # compute errors

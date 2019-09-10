@@ -4,7 +4,7 @@ from mpl_toolkits.mplot3d import Axes3D
 import os
 import yaml
 from os.path import isfile, join, isdir
-from big_pun.tracker_utils import mean_filtering
+from big_pun.tracker_utils import mean_filtering, filter_first_tracks
 
 
 def check_config(config, root, config_path):
@@ -32,6 +32,7 @@ def loadMethod(directory):
     # load and parse tracks
     f_tracks = os.path.join(directory, "tracks.txt")
     tracks = np.genfromtxt(f_tracks)
+    valid_ids, tracks = filter_first_tracks(tracks, filter_too_short=True)
     track_ids = np.unique(tracks[:, 0])
 
     # check that errors and error ids are correct
@@ -154,7 +155,7 @@ def plot_num_features(f, config_path=None, root=None, error_threshold=10, method
     if config_path is not None:
         with open(config_path, "r") as f:
             try:
-                config = yaml.load(f)
+                config = yaml.load(f, Loader=yaml.Loader)
             except:
                 raise Exception("Yaml file '%s' is not formatted correctly." % config_path)
     else:
@@ -255,8 +256,8 @@ def plot_num_features(f, config_path=None, root=None, error_threshold=10, method
     ax.yaxis.set_tick_params(width=3, length=7, labelsize=20, pad=10)
 
     fontProperties = {"weight": "bold"}
-    x_ticks = [t for t in ax.get_xticks()]
-    y_ticks = [t for t in ax.get_yticks()]
+    x_ticks = ["%.2f"%t for t in ax.get_xticks()]
+    y_ticks = ["%.2f"%t for t in ax.get_yticks()]
     ax.set_xticklabels(x_ticks, fontProperties)
     ax.set_yticklabels(y_ticks, fontProperties)
 

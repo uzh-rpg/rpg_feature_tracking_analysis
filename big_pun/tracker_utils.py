@@ -49,12 +49,27 @@ def projectLandmarks(landmarks_global, pose, K):
     features = features.reshape((-1, 1, 2))
     return features
 
-def getTrackData(path, delimiter=" "):
+def getTrackData(path, delimiter=" ", filter_too_short=False):
     data = np.genfromtxt(path, delimiter=delimiter)
-    unique_ids = np.unique(data[:, 0].astype(int))
-    track_data = {i: data[data[:,0]==i, 1:] for i in unique_ids}
-
+    valid_ids, data = filter_first_tracks(data, filter_too_short)
+    track_data = {i: data[data[:,0]==i, 1:] for i in valid_ids}
     return track_data
+
+def filter_first_tracks(tracks, filter_too_short=False):
+    tmin = tracks[0, 1]
+    valid_ids = np.unique(tracks[tracks[:, 1] == tmin, 0]).astype(int)
+    all_ids = np.unique(tracks[:, 0]).astype(int)
+    for id in all_ids:
+        if id not in valid_ids:
+            tracks = tracks[tracks[:, 0] != id]
+        else:
+            if filter_too_short:
+                num_samples = len(tracks[tracks[:,0]==id])
+                if num_samples < 3:
+                    tracks = tracks[tracks[:, 0] != id]
+                    valid_ids = valid_ids[valid_ids!=id]
+
+    return valid_ids, tracks
 
 def getError(est_data, gt_data):
     # discard gt which happen after last est_data
