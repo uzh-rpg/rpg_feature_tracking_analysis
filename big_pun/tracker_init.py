@@ -36,7 +36,7 @@ class TrackerInitializer:
 
         if len(tracks) < first_len_tracks:
             print("WARNING: This package only supports evaluation of tracks which have been initialized at the same"
-                  "time. All tracks except the first have been discarded.")
+                  " time. All tracks except the first have been discarded.")
 
         tracks_dict = {i: tracks[tracks[:, 0] == i, 1:] for i in valid_ids}
         features = np.stack([tracks_dict[i][0] for i in valid_ids]).reshape(-1, 1, 3)
@@ -83,7 +83,7 @@ class TrackerInitializer:
 
         if len(tracks) < first_len_tracks:
             print("WARNING: This package only supports evaluation of tracks which have been initialized at the same"
-                  "time. All tracks except the first have been discarded.")
+                  " time. All tracks except the first have been discarded.")
 
         tracks_dict = {i: tracks[tracks[:, 0] == i, 1:] for i in valid_ids}
 

@@ -5,7 +5,7 @@ from os.path import join
 import numpy as np
 import tqdm
 
-from big_pun.tracker_utils import getTrackData
+from big_pun.tracker_utils import filter_first_tracks, getTrackData
 
 
 class FeatureTracksVisualizer:
@@ -75,7 +75,16 @@ class FeatureTracksVisualizer:
         colors[method] = color
 
         # load tracks
-        tracks[method] = getTrackData(file)
+        data = np.genfromtxt(file, delimiter=" ")
+        first_len_tracks = len(data)
+
+        valid_ids, data = filter_first_tracks(data, filter_too_short=True)
+        track_data = {i: data[data[:, 0] == i, 1:] for i in valid_ids}
+        tracks[method] = track_data
+
+        if len(track_data) < first_len_tracks:
+            print("WARNING: This package only supports evaluation of tracks which have been initialized at the same"
+                  "time. All tracks except the first have been discarded.")
 
         # load gt
         tracks_csv = join(tracks_dir, "tracks.txt.gt.txt")
