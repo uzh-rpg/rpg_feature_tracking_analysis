@@ -1,7 +1,25 @@
 # Feature Tracking Analysis
+[<img src="resources/thumbnail.png" width="400">](https://youtu.be/ZyD1YPW1h4U)
+This repository implements the method for event-based feature tracking evaluation, used in our 2019 IJCV paper [**EKLT: Asynchronous, Photometric Feature Tracking using Events and Frames**](http://rpg.ifi.uzh.ch/docs/IJCV19_Gehrig.pdf) by Daniel Gehrig, [Henri Rebecq](http://henri.rebecq.fr), [Guillermo Gallego](http://www.guillermogallego.es), and [Davide Scaramuzza](http://rpg.ifi.uzh.ch/people_scaramuzza.html).
+Also check out our feature tracking evaluation package [here](https://github.com/uzh-rpg/rpg_feature_tracking_analysis).
 
-This repository implements a common method for event-based feature tracking evaluation. 
-It includes the following two methods for evaluating ground truth feature tracks:
+## Citation
+
+If you use this code in an academic context, please cite the following paper:
+
+Daniel Gehrig, Henri Rebecq, Guillermo Gallego, Davide Scaramuzza, "EKLT: Asynchronous Photometric Feature Tracking using Events and Frames", International Journal of Computer Vision (IJCV), 2019
+```bibtex
+@Article{Gehrig19ijcv,
+  author = {Daniel Gehrig and Henri Rebecq and Guillermo Gallego and Davide Scaramuzza},
+  title = {EKLT: Asynchronous Photometric Feature Tracking using Events and Frames},
+  booktitle = {Int. J. Comput. Vis. (IJCV)},
+  year = {2019}
+}
+```
+
+## Overview  
+
+This repository implements the following two methods for evaluating ground truth feature tracks:
 
 * KLT-based feature tracking on frames synchronized with the events.
 * Feature tracking based on reprojection of landmarks
@@ -16,17 +34,6 @@ offers the following functionality:
 * Compare your feature tracks against other methods
 * Plots of tracking error for individual features
 
-If you use this code in an academic context, please cite the following paper:
-
-Daniel Gehrig, Henri Rebecq, Guillermo Gallego, Davide Scaramuzza, "EKLT: Asynchronous Photometric Feature Tracking using Events and Frames", International Journal of Computer Vision (IJCV), 2019
-```bibtex
-@Article{Gehrig19ijcv,
-  author = {Daniel Gehrig and Henri Rebecq and Guillermo Gallego and Davide Scaramuzza},
-  title = {EKLT: Asynchronous Photometric Feature Tracking using Events and Frames},
-  booktitle = {Int. J. Comput. Vis. (IJCV)},
-  year = {2019}
-}
-```
 
 1. [Installation](#installation)
 2. [How it Works](#how-it-works)
